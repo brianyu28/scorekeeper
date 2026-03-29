@@ -1,5 +1,7 @@
 import type { Middleware } from "@reduxjs/toolkit";
+import { LOCAL_STORAGE_KEY } from "../../utils/consts/storageConsts";
 import { hasActionType } from "../../utils/data/hasActionType";
+import { getLocalStorage } from "../../utils/storage/getLocalStorage";
 import { ScorekeeperActions } from "../store/ScorekeeperSlice";
 
 export const ResetLocalStorageMiddleware: Middleware =
@@ -24,8 +26,8 @@ function clearPersistedScorekeeperState() {
   }
 
   try {
-    storage.removeItem(STORAGE_KEY);
+    storage.removeItem(LOCAL_STORAGE_KEY);
   } catch {
-    // Ignore storage quota and privacy mode failures.
+    return;
   }
 }
