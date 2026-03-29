@@ -1,15 +1,9 @@
 .playerButton {
+  display: block;
+  width: 100%;
   border: 0;
   padding: 0;
   background: transparent;
-}
-
-.playerButton[draggable="true"] .playerCard {
-  cursor: grab;
-}
-
-.playerButton:active .playerCard {
-  cursor: grabbing;
 }
 
 .playerCard {
@@ -20,10 +14,6 @@
   width: 100%;
   padding-inline: 1rem;
   padding-block: 0.875rem;
-
-  &:hover {
-    transform: translateY(-1px);
-  }
 
   .playerName {
     font-size: 24px;

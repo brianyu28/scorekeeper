@@ -1,6 +1,4 @@
 import { Box, Card, Group, Stack, Text } from "@mantine/core";
-import { Reorder } from "motion/react";
-import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import type { PlayerWithPlace } from "../../types/PlayerWithPlace";
@@ -10,37 +8,16 @@ import styles from "./PlayerScoreCard.module.scss";
 
 interface PlayerScoreCardProps {
   player: PlayerWithPlace;
-  dragEnabled: boolean;
 }
 
-function PlayerScoreCard({ player, dragEnabled }: PlayerScoreCardProps) {
+function PlayerScoreCard({ player }: PlayerScoreCardProps) {
   const dispatch = useDispatch();
-  const isDragGestureInProgress = useRef(false);
 
   return (
-    <Reorder.Item
-      key={player.id}
-      value={player.id}
-      as="button"
+    <button
       type="button"
       className={styles.playerButton}
-      drag={dragEnabled ? "y" : false}
-      onDrag={() => {
-        isDragGestureInProgress.current = true;
-      }}
-      onDragEnd={() => {
-        window.setTimeout(() => {
-          isDragGestureInProgress.current = false;
-        }, 0);
-      }}
-      onClick={(event) => {
-        // Don't trigger the click action if the user is currently dragging the card
-        if (isDragGestureInProgress.current) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-
+      onClick={() => {
         dispatch(ScorekeeperActions.ShowPlayerPage(player.id));
       }}
     >
@@ -59,7 +36,7 @@ function PlayerScoreCard({ player, dragEnabled }: PlayerScoreCardProps) {
           </Box>
         </Group>
       </Card>
-    </Reorder.Item>
+    </button>
   );
 }
 
