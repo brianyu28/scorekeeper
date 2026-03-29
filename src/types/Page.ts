@@ -7,6 +7,14 @@ export const PageType = {
 } as const;
 export type PageType = (typeof PageType)[keyof typeof PageType];
 
+export const ScoresViewMode = {
+  UNORDERED: "unordered",
+  HIGH: "high",
+  LOW: "low",
+} as const;
+export type ScoresViewMode =
+  (typeof ScoresViewMode)[keyof typeof ScoresViewMode];
+
 export interface PlayerConfigPage {
   pageType: typeof PageType.PLAYER_CONFIG;
 }

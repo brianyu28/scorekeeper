@@ -1,0 +1,91 @@
+.viewToggle {
+  position: relative;
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-gray-1);
+  padding: 4px;
+}
+
+.viewToggleGroup {
+  position: relative;
+  z-index: 1;
+}
+
+.viewToggleButton {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-gray-7);
+}
+
+.viewToggleButton[data-active="true"] {
+  color: var(--mantine-color-white);
+  font-weight: 700;
+}
+
+.viewToggleIndicator {
+  background: var(--mantine-color-blue-filled);
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+}
+
+.playerList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.playerButton {
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  appearance: none;
+  font: inherit;
+  text-align: left;
+}
+
+.playerCard {
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+  width: 100%;
+  padding-inline: 1rem;
+  padding-block: 0.875rem;
+}
+
+.playerButton[draggable="true"] .playerCard {
+  cursor: grab;
+}
+
+.playerButton:active .playerCard {
+  cursor: grabbing;
+}
+
+.playerCard:hover {
+  transform: translateY(-1px);
+}
+
+.scoreBadge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: max-content;
+  min-inline-size: 4.5rem;
+  block-size: 4.5rem;
+  padding-inline: 1rem;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--mantine-color-blue-6);
+  color: var(--mantine-color-white);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.scoreValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

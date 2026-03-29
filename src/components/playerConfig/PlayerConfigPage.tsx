@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mantine/core";
+import { Button, Stack, Title } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlayerCount } from "../../data/selectors/PlayerSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
@@ -15,9 +15,10 @@ function PlayerConfigPage() {
 
   return (
     <Stack>
+      <Title order={2}>Players</Title>
       <NewPlayerForm />
       <Button disabled={playerCount === 0} onClick={startGame}>
-        Start game
+        Play game
         {playerCount > 0
           ? ` (${playerCount} player${playerCount > 1 ? "s" : ""})`
           : ""}

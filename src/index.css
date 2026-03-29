@@ -1,3 +1,7 @@
-body {
+#root {
   padding: 8px;
+}
+
+body {
+  margin: 0;
 }
