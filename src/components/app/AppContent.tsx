@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import HistoryPage from "../history/HistoryPage";
 import PlayerPage from "../player/PlayerPage";
 import ScoresPage from "../scores/ScoresPage";
 import { selectCurrentPage } from "../../data/selectors/UiSelectors";
@@ -14,6 +15,8 @@ function AppContent() {
       return <PlayerPage playerId={currentPage.playerId} />;
     case PageType.PLAYER_CONFIG:
       return <PlayerConfigPage />;
+    case PageType.HISTORY:
+      return <HistoryPage />;
     case PageType.SCORES:
       return <ScoresPage />;
     default:

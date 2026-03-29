@@ -17,6 +17,7 @@ export function createInitialScorekeeperState(): ScorekeeperState {
       page: PLAYER_CONFIG_PAGE,
       scoresViewMode: ScoresViewMode.CUSTOM,
     },
+    scoreHistory: [],
   };
 }
 
@@ -31,6 +32,7 @@ export const scorekeeperSlice = createSlice({
       state.players.forEach((player) => {
         player.score = 0;
       });
+      state.scoreHistory = [];
     },
     ...PlayerReducers,
     ...GameConfigReducers,

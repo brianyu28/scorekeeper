@@ -27,6 +27,16 @@ export const selectCurrentPlayerId = createSelector(
   (page) => (page.pageType === PageType.PLAYER ? page.playerId : undefined),
 );
 
+export const selectCurrentHistoryPlayerId = createSelector(
+  selectCurrentPage,
+  (page) => (page.pageType === PageType.HISTORY ? page.playerId : undefined),
+);
+
+export const selectHistoryBackPage = createSelector(
+  selectUiState,
+  (uiState) => uiState.historyBackPage,
+);
+
 export const selectScoresViewMode = createSelector(
   selectUiState,
   (uiState) => uiState.scoresViewMode,

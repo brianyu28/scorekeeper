@@ -1,6 +1,7 @@
 import { Button, Menu } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAreHigherValuesBetter } from "../../data/selectors/UiSelectors";
+import { SCORES_PAGE } from "../../types/Page";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 
 interface ScoresPageMenuProps {
@@ -28,6 +29,17 @@ function ScoresPageMenu({
         <Button variant="outline">Game</Button>
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Item
+          onClick={() =>
+            dispatch(
+              ScorekeeperActions.ShowHistoryPage({
+                backPage: SCORES_PAGE,
+              }),
+            )
+          }
+        >
+          Game history
+        </Menu.Item>
         <Menu.Item
           onClick={() => dispatch(ScorekeeperActions.ShowPlayerConfigPage())}
         >

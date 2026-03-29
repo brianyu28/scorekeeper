@@ -4,10 +4,18 @@ import {
   Literal,
   Number,
   Object,
+  Optional,
   String,
   Union,
 } from "runtypes";
 import { PageType, ScoresViewMode } from "../../types/Page";
+
+const HistoryEntrySchema = Object({
+  playerId: String,
+  timestamp: Number,
+  scoreChange: Number,
+  scoreBefore: Number,
+}).exact();
 
 const PlayerSchema = Object({
   id: String,
@@ -19,7 +27,7 @@ const GameConfigSchema = Object({
   areHigherValuesBetter: Boolean,
 }).exact();
 
-const PageSchema = Union(
+const PageWithoutHistorySchema = Union(
   Object({
     pageType: Literal(PageType.PLAYER_CONFIG),
   }).exact(),
@@ -32,16 +40,25 @@ const PageSchema = Union(
   }).exact(),
 );
 
+const HistoryPageSchema = Object({
+  pageType: Literal(PageType.HISTORY),
+  playerId: Optional(String),
+}).exact();
+
+const PageSchema = Union(PageWithoutHistorySchema, HistoryPageSchema);
+
 const UiSchema = Object({
   page: PageSchema,
   scoresViewMode: Union(
     Literal(ScoresViewMode.CUSTOM),
     Literal(ScoresViewMode.BY_SCORE),
   ),
+  historyBackPage: Optional(PageWithoutHistorySchema),
 }).exact();
 
 export const ScorekeeperStateSchema = Object({
   players: Array(PlayerSchema),
   gameConfig: GameConfigSchema,
   ui: UiSchema,
+  scoreHistory: Array(HistoryEntrySchema),
 }).exact();

@@ -1,0 +1,64 @@
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historyButton {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.historyCard {
+  width: 100%;
+  padding-inline: 1rem;
+  padding-block: 0.875rem;
+}
+
+.playerName {
+  font-size: 1.125rem;
+}
+
+.timestamp {
+  font-size: 0.8125rem;
+}
+
+.scoreLine {
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.scoreDeltaBadge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 4.75rem;
+  min-block-size: 4.75rem;
+  padding-inline: 1rem;
+  border-radius: 1.25rem;
+  background: var(--mantine-color-gray-1);
+  box-sizing: border-box;
+}
+
+.scoreDeltaPositive {
+  background: var(--mantine-color-green-0);
+  color: var(--mantine-color-green-8);
+}
+
+.scoreDeltaNegative {
+  background: var(--mantine-color-red-0);
+  color: var(--mantine-color-red-8);
+}
+
+.scoreDeltaValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

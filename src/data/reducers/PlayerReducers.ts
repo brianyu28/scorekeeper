@@ -46,6 +46,9 @@ export const PlayerReducers = {
     state.players = state.players.filter(
       (player) => player.id !== action.payload,
     );
+    state.scoreHistory = state.scoreHistory.filter(
+      (entry) => entry.playerId !== action.payload,
+    );
   },
   SetPlayerOrder: (
     state: ScorekeeperState,
@@ -65,6 +68,13 @@ export const PlayerReducers = {
       return;
     }
 
+    const scoreBefore = player.score;
     player.score += action.payload.scoreDelta;
+    state.scoreHistory.push({
+      playerId: player.id,
+      timestamp: Date.now(),
+      scoreChange: action.payload.scoreDelta,
+      scoreBefore,
+    });
   },
 } as const;

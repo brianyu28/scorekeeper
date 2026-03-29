@@ -15,27 +15,31 @@ const rootReducer = {
 
 function loadScorekeeperState(): ScorekeeperState {
   const storage = getLocalStorage();
+  const initialState = createInitialScorekeeperState();
+
   if (storage === undefined) {
-    return createInitialScorekeeperState();
+    return initialState;
   }
 
   const rawState = storage.getItem(LOCAL_STORAGE_KEY);
 
   if (!rawState) {
-    return createInitialScorekeeperState();
+    return initialState;
   }
 
   try {
     const parsed: unknown = JSON.parse(rawState);
-
     if (ScorekeeperStateSchema.guard(parsed)) {
-      return parsed as ScorekeeperState;
+      const state = parsed as ScorekeeperState;
+      return state;
     }
+
+    storage.removeItem(LOCAL_STORAGE_KEY);
   } catch {
     storage.removeItem(LOCAL_STORAGE_KEY);
   }
 
-  return createInitialScorekeeperState();
+  return initialState;
 }
 
 function persistScorekeeperState(state: ScorekeeperState) {

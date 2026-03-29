@@ -9,6 +9,7 @@ import type { PlayerId } from "../../types/PlayerId";
 import { formatScore } from "../../utils/scores/formatScore";
 import { getNumberPadKeyForKey } from "../../utils/ui/getNumberPadKeyForKey";
 import NumberPad from "../common/NumberPad";
+import PlayerPageMenu from "./PlayerPageMenu";
 
 interface Props {
   playerId: PlayerId;
@@ -107,7 +108,10 @@ function PlayerPage({ playerId }: Props) {
 
   return (
     <Stack>
-      <Title order={2}>{player.name}</Title>
+      <Group justify="space-between" align="center">
+        <Title order={2}>{player.name}</Title>
+        <PlayerPageMenu playerId={playerId} />
+      </Group>
       <Card withBorder>
         <Stack gap="xs">
           <Text size="sm" c="dimmed">

@@ -4,6 +4,7 @@ export const PageType = {
   PLAYER_CONFIG: "PlayerConfig",
   SCORES: "Scores",
   PLAYER: "Player",
+  HISTORY: "History",
 } as const;
 export type PageType = (typeof PageType)[keyof typeof PageType];
 
@@ -35,4 +36,10 @@ export interface PlayerPage {
   playerId: PlayerId;
 }
 
-export type Page = PlayerConfigPage | ScoresPage | PlayerPage;
+export interface HistoryPage {
+  pageType: typeof PageType.HISTORY;
+  playerId?: PlayerId;
+}
+
+export type PageWithoutHistory = PlayerConfigPage | ScoresPage | PlayerPage;
+export type Page = PageWithoutHistory | HistoryPage;
