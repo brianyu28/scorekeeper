@@ -1,19 +1,19 @@
 import { Card, CloseButton, Group, Stack, Text } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPlayersInManualOrder } from "../../data/selectors/PlayerSelectors";
+import { selectPlayers } from "../../data/selectors/PlayerSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import styles from "./ConfiguredPlayerList.module.scss";
 
 function ConfiguredPlayerList() {
   const dispatch = useDispatch();
-  const players = useSelector(selectPlayersInManualOrder);
+  const players = useSelector(selectPlayers);
 
   return (
     <Stack gap={6}>
       {players.map((player) => (
-        <Card key={player.id} withBorder className={styles.playerCard}>
+        <Card key={player.id} className={styles.playerCard} withBorder>
           <Group justify="space-between" wrap="nowrap">
-            <Text fw={600}>{player.name}</Text>
+            <Text className={styles.playerName}>{player.name}</Text>
             <CloseButton
               variant="subtle"
               c="red"

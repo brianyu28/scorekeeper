@@ -1,4 +1,5 @@
 export const NumberPadKey = {
+  // Digit values must be their string representation for correct parsing
   ZERO: "0",
   ONE: "1",
   TWO: "2",

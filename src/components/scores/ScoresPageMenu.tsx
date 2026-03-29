@@ -1,25 +1,31 @@
 import { Button, Menu } from "@mantine/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAreHigherValuesBetter } from "../../data/selectors/UiSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 
 interface ScoresPageMenuProps {
-  onResetGame: () => void;
+  onResetPlayers: () => void;
+  onResetScores: () => void;
 }
 
-function ScoresPageMenu({ onResetGame }: ScoresPageMenuProps) {
+function ScoresPageMenu({
+  onResetPlayers,
+  onResetScores,
+}: ScoresPageMenuProps) {
   const dispatch = useDispatch();
+  const areHigherValuesBetter = useSelector(selectAreHigherValuesBetter);
 
   return (
     <Menu
       shadow="md"
-      width={200}
+      width={240}
       position="bottom-end"
       withArrow
       arrowSize={12}
       arrowPosition="center"
     >
       <Menu.Target>
-        <Button variant="outline">Settings</Button>
+        <Button variant="outline">Game</Button>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
@@ -27,9 +33,27 @@ function ScoresPageMenu({ onResetGame }: ScoresPageMenuProps) {
         >
           Edit players
         </Menu.Item>
-        <Menu.Item color="red" fw={700} onClick={onResetGame}>
-          Reset game
+        <Menu.Item
+          onClick={() =>
+            dispatch(ScorekeeperActions.ToggleAreHigherValuesBetter())
+          }
+          rightSection={areHigherValuesBetter ? "On" : "Off"}
+        >
+          Larger scores are better
         </Menu.Item>
+        <Menu.Sub position="left-start">
+          <Menu.Sub.Target>
+            <Menu.Sub.Item>Reset</Menu.Sub.Item>
+          </Menu.Sub.Target>
+          <Menu.Sub.Dropdown>
+            <Menu.Item color="red" fw={700} onClick={onResetScores}>
+              Reset scores
+            </Menu.Item>
+            <Menu.Item color="red" fw={700} onClick={onResetPlayers}>
+              Reset players
+            </Menu.Item>
+          </Menu.Sub.Dropdown>
+        </Menu.Sub>
       </Menu.Dropdown>
     </Menu>
   );

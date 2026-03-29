@@ -1,10 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { RootState } from "../store/Store";
-import type { Player } from "../../types/Player";
-import type { PlayerId } from "../../types/PlayerId";
 import { ScoresViewMode } from "../../types/Page";
+import type { PlayerId } from "../../types/PlayerId";
+import type { PlayerWithPlace } from "../../types/PlayerWithPlace";
 import { selectScorekeeperState } from "./AppSelectors";
-import { selectScoresViewMode } from "./UiSelectors";
+import { selectGameConfig, selectScoresViewMode } from "./UiSelectors";
 
 export const selectPlayers = createSelector(
   selectScorekeeperState,
@@ -16,81 +15,51 @@ export const selectPlayerCount = createSelector(
   (players) => players.length,
 );
 
-export const selectPlayerOrder = createSelector(
-  selectScorekeeperState,
-  (state) => state.playerOrder,
-);
+export const selectPlayersWithPlace = createSelector(
+  [selectPlayers, selectGameConfig],
+  (players, gameConfig): PlayerWithPlace[] => {
+    const scoreCounts = players.reduce<Record<number, number>>(
+      (counts, player) => {
+        counts[player.score] = (counts[player.score] ?? 0) + 1;
+        return counts;
+      },
+      {},
+    );
+    const orderIndex = new Map(
+      players.map((player, index) => [player.id, index] as const),
+    );
+    const sortedPlayers = [...players].sort((left, right) => {
+      const scoreDifference = gameConfig.areHigherValuesBetter
+        ? right.score - left.score
+        : left.score - right.score;
 
-export const selectPlayersInManualOrder = createSelector(
-  [selectPlayers, selectPlayerOrder],
-  (players, playerOrder) => {
-    const playersById = new Map(players.map((player) => [player.id, player]));
+      if (scoreDifference !== 0) {
+        return scoreDifference;
+      }
 
-    return playerOrder
-      .map((playerId) => playersById.get(playerId))
-      .filter((player): player is Player => player !== undefined);
+      return orderIndex.get(left.id)! - orderIndex.get(right.id)!;
+    });
+
+    let currentPlace = 0;
+    let previousScore: number | undefined;
+
+    return sortedPlayers.map((player, index) => {
+      if (previousScore !== player.score) {
+        currentPlace = index + 1;
+        previousScore = player.score;
+      }
+
+      return {
+        ...player,
+        place: currentPlace,
+        isTied: scoreCounts[player.score] > 1,
+      };
+    });
   },
 );
 
-export interface PlayerWithPlace extends Player {
-  place: number;
-  isTied: boolean;
-}
-
-type ScoreSortDirection = "high" | "low";
-
-function createRankedPlayersSelector(direction: ScoreSortDirection) {
-  return createSelector(
-    [selectPlayersInManualOrder, selectPlayerOrder],
-    (players, playerOrder) => {
-      const scoreCounts = players.reduce<Record<number, number>>(
-        (counts, player) => {
-          counts[player.score] = (counts[player.score] ?? 0) + 1;
-          return counts;
-        },
-        {},
-      );
-      const orderIndex = new Map(
-        playerOrder.map((playerId, index) => [playerId, index] as const),
-      );
-      const sortedPlayers = [...players].sort((left, right) => {
-        const scoreDifference =
-          direction === "high"
-            ? right.score - left.score
-            : left.score - right.score;
-
-        if (scoreDifference !== 0) {
-          return scoreDifference;
-        }
-
-        return orderIndex.get(left.id)! - orderIndex.get(right.id)!;
-      });
-
-      let currentPlace = 0;
-      let previousScore: number | undefined;
-
-      return sortedPlayers.map((player, index) => {
-        if (previousScore !== player.score) {
-          currentPlace = index + 1;
-          previousScore = player.score;
-        }
-
-        return {
-          ...player,
-          place: currentPlace,
-          isTied: scoreCounts[player.score] > 1,
-        };
-      });
-    },
-  );
-}
-
-export const selectPlayersWithHighScores = createRankedPlayersSelector("high");
-export const selectPlayersWithLowScores = createRankedPlayersSelector("low");
-export const selectPlayersWithPlace = selectPlayersWithHighScores;
-
-export const selectPlayersInManualOrderWithPlace = createSelector(
-  [selectPlayersInManualOrder, selectPlayersWithHighScores],
+export const selectPlayersInCustomOrderWithPlace = createSelector(
+  [selectPlayers, selectPlayersWithPlace],
   (players, rankedPlayers) => {
     const rankedById = new Map(
       rankedPlayers.map((player) => [player.id, player]),
@@ -119,25 +88,22 @@ export const selectPlayersInManualOrderWithPlace = createSelector(
 export const selectPlayersForScoresView = createSelector(
   [
     selectScoresViewMode,
-    selectPlayersInManualOrderWithPlace,
-    selectPlayersWithHighScores,
-    selectPlayersWithLowScores,
+    selectPlayersInCustomOrderWithPlace,
+    selectPlayersWithPlace,
   ],
-  (viewMode, unorderedPlayers, highScorePlayers, lowScorePlayers) => {
+  (viewMode, customOrderPlayers, scoredPlayers) => {
     switch (viewMode) {
-      case ScoresViewMode.UNORDERED:
-        return unorderedPlayers;
-      case ScoresViewMode.HIGH:
-        return highScorePlayers;
-      case ScoresViewMode.LOW:
-        return lowScorePlayers;
+      case ScoresViewMode.CUSTOM:
+        return customOrderPlayers;
+      case ScoresViewMode.BY_SCORE:
+        return scoredPlayers;
       default:
-        return unorderedPlayers;
+        return customOrderPlayers;
     }
   },
 );
 
 export const selectPlayerById = createSelector(
-  [selectPlayers, (_state: RootState, playerId: PlayerId) => playerId],
+  [selectPlayers, (_, playerId: PlayerId) => playerId],
   (players, playerId) => players.find((player) => player.id === playerId),
 );

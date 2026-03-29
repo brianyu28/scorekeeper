@@ -1,11 +1,17 @@
-import { Button, SimpleGrid, Stack } from "@mantine/core";
+import { Button, SimpleGrid, Stack, type ButtonVariant } from "@mantine/core";
 import { NumberPadKey } from "../../types/NumberPadKey";
 
 interface Props {
   onKeyPress: (key: NumberPadKey) => void;
 }
 
-const KEYS: Array<Array<{ key: NumberPadKey; label: string }>> = [
+interface KeyConfig {
+  key: NumberPadKey;
+  label: string;
+  variant?: ButtonVariant;
+}
+
+const KEYS: Array<Array<KeyConfig>> = [
   [
     { key: NumberPadKey.ONE, label: "1" },
     { key: NumberPadKey.TWO, label: "2" },
@@ -22,9 +28,9 @@ const KEYS: Array<Array<{ key: NumberPadKey; label: string }>> = [
     { key: NumberPadKey.NINE, label: "9" },
   ],
   [
-    { key: NumberPadKey.NEGATE, label: "−" },
+    { key: NumberPadKey.NEGATE, label: "−", variant: "subtle" },
     { key: NumberPadKey.ZERO, label: "0" },
-    { key: NumberPadKey.BACKSPACE, label: "⌫" },
+    { key: NumberPadKey.BACKSPACE, label: "⌫", variant: "subtle" },
   ],
 ];
 
@@ -32,11 +38,11 @@ function NumberPad({ onKeyPress }: Props) {
   return (
     <Stack gap="sm">
       <SimpleGrid cols={3} spacing="sm">
-        {KEYS.flat().map(({ key, label }) => (
+        {KEYS.flat().map(({ key, label, variant }) => (
           <Button
             key={key}
             size="lg"
-            variant="light"
+            variant={variant ?? "light"}
             onClick={() => onKeyPress(key)}
           >
             {label}

@@ -7,28 +7,11 @@ import type { RootState } from "../../data/store/Store";
 import { NumberPadKey } from "../../types/NumberPadKey";
 import type { PlayerId } from "../../types/PlayerId";
 import { formatScore } from "../../utils/scores/formatScore";
+import { getNumberPadKeyForKey } from "../../utils/ui/getNumberPadKeyForKey";
 import NumberPad from "../common/NumberPad";
 
 interface Props {
   playerId: PlayerId;
-}
-
-function keyToPadKey(event: KeyboardEvent): NumberPadKey | null {
-  if (/^[0-9]$/.test(event.key)) {
-    return event.key as NumberPadKey;
-  }
-
-  switch (event.key) {
-    case "Enter":
-      return null;
-    case "-":
-    case "_":
-      return "-";
-    case "Backspace":
-      return "backspace";
-    default:
-      return null;
-  }
 }
 
 function PlayerPage({ playerId }: Props) {
@@ -40,7 +23,7 @@ function PlayerPage({ playerId }: Props) {
   const [absoluteScoreDelta, setAbsoluteScoreDelta] = useState(0);
   const [isNegated, setIsNegated] = useState(false);
 
-  const applyEntry = useCallback(() => {
+  const updateScore = useCallback(() => {
     const scoreDelta = isNegated ? -absoluteScoreDelta : absoluteScoreDelta;
 
     dispatch(ScorekeeperActions.UpdatePlayerScore({ playerId, scoreDelta }));
@@ -82,15 +65,20 @@ function PlayerPage({ playerId }: Props) {
         return;
       }
 
-      if (event.key === "Enter") {
+      if (event.key === "Escape") {
         event.preventDefault();
-        applyEntry();
+        dispatch(ScorekeeperActions.ShowScoresPage());
         return;
       }
 
-      const key = keyToPadKey(event);
+      if (event.key === "Enter") {
+        event.preventDefault();
+        updateScore();
+        return;
+      }
 
-      if (!key) {
+      const key = getNumberPadKeyForKey(event);
+      if (key === undefined) {
         return;
       }
 
@@ -104,9 +92,9 @@ function PlayerPage({ playerId }: Props) {
     return () => {
       window.removeEventListener("keydown", handleKeyboardInput);
     };
-  }, [applyEntry, handleKeyPress]);
+  }, [updateScore, dispatch, handleKeyPress]);
 
-  if (!player) {
+  if (player === undefined) {
     return (
       <Stack>
         <Title order={2}>Player not found</Title>
@@ -147,7 +135,7 @@ function PlayerPage({ playerId }: Props) {
             >
               Cancel
             </Button>
-            <Button onClick={applyEntry}>
+            <Button onClick={updateScore}>
               {isNegated ? "-" : "+"}
               {formatScore(absoluteScoreDelta)}
             </Button>

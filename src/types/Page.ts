@@ -8,9 +8,8 @@ export const PageType = {
 export type PageType = (typeof PageType)[keyof typeof PageType];
 
 export const ScoresViewMode = {
-  UNORDERED: "unordered",
-  HIGH: "high",
-  LOW: "low",
+  CUSTOM: "custom",
+  BY_SCORE: "by-score",
 } as const;
 export type ScoresViewMode =
   (typeof ScoresViewMode)[keyof typeof ScoresViewMode];

@@ -1,0 +1,55 @@
+.playerButton {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.playerButton[draggable="true"] .playerCard {
+  cursor: grab;
+}
+
+.playerButton:active .playerCard {
+  cursor: grabbing;
+}
+
+.playerCard {
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+  width: 100%;
+  padding-inline: 1rem;
+  padding-block: 0.875rem;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  .playerName {
+    font-size: 24px;
+  }
+
+  .scoreBadge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: max-content;
+    min-inline-size: 4.5rem;
+    block-size: 4.5rem;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: var(--mantine-color-blue-6);
+    color: var(--mantine-color-white);
+    box-shadow: var(--mantine-shadow-md);
+
+    .scoreValue {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}

@@ -1,7 +1,36 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { generatePlayerId } from "../../utils/player/generatePlayerId";
+import type { Player } from "../../types/Player";
 import type { PlayerId } from "../../types/PlayerId";
 import type { ScorekeeperState } from "../state/ScorekeeperState";
+
+function reorderPlayers(
+  players: Player[],
+  orderedPlayerIds: PlayerId[],
+): Player[] {
+  const playersById = new Map(players.map((player) => [player.id, player]));
+  const reorderedPlayers: Player[] = [];
+  const seenIds = new Set<PlayerId>();
+
+  for (const playerId of orderedPlayerIds) {
+    const player = playersById.get(playerId);
+
+    if (!player || seenIds.has(playerId)) {
+      continue;
+    }
+
+    seenIds.add(playerId);
+    reorderedPlayers.push(player);
+  }
+
+  for (const player of players) {
+    if (!seenIds.has(player.id)) {
+      reorderedPlayers.push(player);
+    }
+  }
+
+  return reorderedPlayers;
+}
 
 export const PlayerReducers = {
   AddPlayer: (state: ScorekeeperState, action: PayloadAction<string>) => {
@@ -12,21 +41,17 @@ export const PlayerReducers = {
       name: action.payload,
       score: 0,
     });
-    state.playerOrder.push(id);
   },
   RemovePlayer: (state: ScorekeeperState, action: PayloadAction<PlayerId>) => {
     state.players = state.players.filter(
       (player) => player.id !== action.payload,
-    );
-    state.playerOrder = state.playerOrder.filter(
-      (playerId) => playerId !== action.payload,
     );
   },
   SetPlayerOrder: (
     state: ScorekeeperState,
     action: PayloadAction<PlayerId[]>,
   ) => {
-    state.playerOrder = action.payload;
+    state.players = reorderPlayers(state.players, action.payload);
   },
   UpdatePlayerScore: (
     state: ScorekeeperState,

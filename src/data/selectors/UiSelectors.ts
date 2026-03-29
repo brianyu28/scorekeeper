@@ -7,6 +7,16 @@ export const selectUiState = createSelector(
   (state) => state.ui,
 );
 
+export const selectGameConfig = createSelector(
+  selectScorekeeperState,
+  (state) => state.gameConfig,
+);
+
+export const selectAreHigherValuesBetter = createSelector(
+  selectGameConfig,
+  (gameConfig) => gameConfig.areHigherValuesBetter,
+);
+
 export const selectCurrentPage = createSelector(
   selectUiState,
   (uiState) => uiState.page,

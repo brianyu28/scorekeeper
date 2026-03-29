@@ -2,11 +2,11 @@ import { Box, Card, Group, Stack, Text } from "@mantine/core";
 import { Reorder } from "motion/react";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import type { PlayerWithPlace } from "../../data/selectors/PlayerSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
+import type { PlayerWithPlace } from "../../types/PlayerWithPlace";
 import { formatScore } from "../../utils/scores/formatScore";
-import { getOrdinalSuffix } from "../../utils/scores/getOrdinalSuffix";
-import styles from "./ScoresPage.module.scss";
+import PlayerPlaceIndicator from "./PlayerPlaceIndicator";
+import styles from "./PlayerScoreCard.module.scss";
 
 interface PlayerScoreCardProps {
   player: PlayerWithPlace;
@@ -15,7 +15,7 @@ interface PlayerScoreCardProps {
 
 function PlayerScoreCard({ player, dragEnabled }: PlayerScoreCardProps) {
   const dispatch = useDispatch();
-  const dragGestureInProgress = useRef(false);
+  const isDragGestureInProgress = useRef(false);
 
   return (
     <Reorder.Item
@@ -26,16 +26,16 @@ function PlayerScoreCard({ player, dragEnabled }: PlayerScoreCardProps) {
       className={styles.playerButton}
       drag={dragEnabled ? "y" : false}
       onDrag={() => {
-        dragGestureInProgress.current = true;
+        isDragGestureInProgress.current = true;
       }}
       onDragEnd={() => {
         window.setTimeout(() => {
-          dragGestureInProgress.current = false;
+          isDragGestureInProgress.current = false;
         }, 0);
       }}
       onClick={(event) => {
         // Don't trigger the click action if the user is currently dragging the card
-        if (dragGestureInProgress.current) {
+        if (isDragGestureInProgress.current) {
           event.preventDefault();
           event.stopPropagation();
           return;
@@ -47,12 +47,10 @@ function PlayerScoreCard({ player, dragEnabled }: PlayerScoreCardProps) {
       <Card withBorder className={styles.playerCard}>
         <Group justify="space-between" wrap="nowrap" align="center">
           <Stack gap={4}>
-            <Text fw={700}>{player.name}</Text>
-            <Text c="dimmed">
-              Place: {player.place}
-              {getOrdinalSuffix(player.place)}
-              {player.isTied ? " (tie)" : ""}
+            <Text className={styles.playerName} size="xl" fw={700}>
+              {player.name}
             </Text>
+            <PlayerPlaceIndicator isTied={player.isTied} place={player.place} />
           </Stack>
           <Box className={styles.scoreBadge}>
             <Text className={styles.scoreValue}>

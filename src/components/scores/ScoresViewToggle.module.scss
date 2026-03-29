@@ -1,0 +1,29 @@
+.viewToggle {
+  position: relative;
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-gray-1);
+  padding: 4px;
+}
+
+.viewToggleGroup {
+  position: relative;
+  z-index: 1;
+}
+
+.viewToggleButton {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-gray-7);
+}
+
+.viewToggleButton[data-active="true"] {
+  color: var(--mantine-color-white);
+  font-weight: 700;
+}
+
+.viewToggleIndicator {
+  background: var(--mantine-color-blue-filled);
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: var(--mantine-shadow-sm);
+}

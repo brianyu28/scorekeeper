@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectScoresViewMode } from "../../data/selectors/UiSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import { ScoresViewMode } from "../../types/Page";
-import styles from "./ScoresPage.module.scss";
+import styles from "./ScoresViewToggle.module.scss";
 
 function ScoresViewToggle() {
   const dispatch = useDispatch();
@@ -13,19 +13,15 @@ function ScoresViewToggle() {
   const [parentElement, setParentElement] = useState<HTMLDivElement | null>(
     null,
   );
-  const [unorderedButtonElement, setUnorderedButtonElement] =
+  const [customOrderButtonElement, setCustomOrderButtonElement] =
     useState<HTMLButtonElement | null>(null);
-  const [highButtonElement, setHighButtonElement] =
-    useState<HTMLButtonElement | null>(null);
-  const [lowButtonElement, setLowButtonElement] =
+  const [byScoreButtonElement, setByScoreButtonElement] =
     useState<HTMLButtonElement | null>(null);
 
   const activeButtonElement =
-    viewMode === ScoresViewMode.UNORDERED
-      ? unorderedButtonElement
-      : viewMode === ScoresViewMode.HIGH
-        ? highButtonElement
-        : lowButtonElement;
+    viewMode === ScoresViewMode.CUSTOM
+      ? customOrderButtonElement
+      : byScoreButtonElement;
 
   return (
     <Box className={styles.viewToggle} ref={setParentElement}>
@@ -37,39 +33,30 @@ function ScoresViewToggle() {
       />
       <Group grow gap={0} className={styles.viewToggleGroup}>
         <Button
-          ref={setUnorderedButtonElement}
+          ref={setCustomOrderButtonElement}
           className={styles.viewToggleButton}
-          data-active={viewMode === ScoresViewMode.UNORDERED}
+          data-active={viewMode === ScoresViewMode.CUSTOM}
           variant="subtle"
           onClick={() =>
             dispatch(
-              ScorekeeperActions.SetScoresViewMode(ScoresViewMode.UNORDERED),
+              ScorekeeperActions.SetScoresViewMode(ScoresViewMode.CUSTOM),
             )
           }
         >
           Custom order
         </Button>
         <Button
-          ref={setHighButtonElement}
+          ref={setByScoreButtonElement}
           className={styles.viewToggleButton}
-          data-active={viewMode === ScoresViewMode.HIGH}
+          data-active={viewMode === ScoresViewMode.BY_SCORE}
           variant="subtle"
           onClick={() =>
-            dispatch(ScorekeeperActions.SetScoresViewMode(ScoresViewMode.HIGH))
+            dispatch(
+              ScorekeeperActions.SetScoresViewMode(ScoresViewMode.BY_SCORE),
+            )
           }
         >
-          High scores
-        </Button>
-        <Button
-          ref={setLowButtonElement}
-          className={styles.viewToggleButton}
-          data-active={viewMode === ScoresViewMode.LOW}
-          variant="subtle"
-          onClick={() =>
-            dispatch(ScorekeeperActions.SetScoresViewMode(ScoresViewMode.LOW))
-          }
-        >
-          Low scores
+          By score
         </Button>
       </Group>
     </Box>
