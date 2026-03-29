@@ -30,6 +30,7 @@ function PlayerRow({ player }: PlayerRowProps) {
             className={styles.dragHandle}
             aria-label={`Reorder ${player.name}`}
             onPointerDown={(event) => {
+              event.preventDefault();
               dragControls.start(event);
             }}
           >

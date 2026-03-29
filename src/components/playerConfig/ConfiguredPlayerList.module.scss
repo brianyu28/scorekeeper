@@ -27,6 +27,9 @@
   color: var(--mantine-color-dimmed);
   cursor: grab;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   padding: 0;
 }
 
@@ -38,6 +41,8 @@
   display: inline-flex;
   flex-direction: column;
   gap: 3px;
+  user-select: none;
+  -webkit-user-select: none;
 
   span {
     inline-size: 0.9rem;

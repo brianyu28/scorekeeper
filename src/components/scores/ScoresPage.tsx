@@ -1,4 +1,5 @@
 import { Group, Stack, Title } from "@mantine/core";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectPlayersForScoresView } from "../../data/selectors/PlayerSelectors";
@@ -26,7 +27,9 @@ function ScoresPage() {
       <ScoresViewToggle />
       <div className={styles.playerList}>
         {players.map((player) => (
-          <PlayerScoreCard key={player.id} player={player} />
+          <motion.div key={player.id} layout>
+            <PlayerScoreCard player={player} />
+          </motion.div>
         ))}
       </div>
       <ResetScoresModal
