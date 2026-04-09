@@ -1,5 +1,6 @@
 import { Box, Card, Group, Stack, Text } from "@mantine/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAreAllPlayerScoresZero } from "../../data/selectors/PlayerSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import type { PlayerWithPlace } from "../../types/PlayerWithPlace";
 import AnimatedScore from "../common/AnimatedScore";
@@ -12,6 +13,7 @@ interface PlayerScoreCardProps {
 
 function PlayerScoreCard({ player }: PlayerScoreCardProps) {
   const dispatch = useDispatch();
+  const areAllPlayerScoresZero = useSelector(selectAreAllPlayerScoresZero);
 
   return (
     <button
@@ -27,7 +29,12 @@ function PlayerScoreCard({ player }: PlayerScoreCardProps) {
             <Text className={styles.playerName} size="xl" fw={700}>
               {player.name}
             </Text>
-            <PlayerPlaceIndicator isTied={player.isTied} place={player.place} />
+            {!areAllPlayerScoresZero ? (
+              <PlayerPlaceIndicator
+                isTied={player.isTied}
+                place={player.place}
+              />
+            ) : null}
           </Stack>
           <Box className={styles.scoreBadge}>
             <Text className={styles.scoreValue}>

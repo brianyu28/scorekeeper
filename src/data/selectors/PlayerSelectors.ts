@@ -15,6 +15,11 @@ export const selectPlayerCount = createSelector(
   (players) => players.length,
 );
 
+export const selectAreAllPlayerScoresZero = createSelector(
+  selectPlayers,
+  (players) => players.every((player) => player.score === 0),
+);
+
 export const selectPlayersWithPlace = createSelector(
   [selectPlayers, selectGameConfig],
   (players, gameConfig): PlayerWithPlace[] => {
