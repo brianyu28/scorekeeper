@@ -8,6 +8,7 @@ import { NumberPadKey } from "../../types/NumberPadKey";
 import type { PlayerId } from "../../types/PlayerId";
 import { formatScore } from "../../utils/scores/formatScore";
 import { getNumberPadKeyForKey } from "../../utils/ui/getNumberPadKeyForKey";
+import AnimatedScore from "../common/AnimatedScore";
 import NumberPad from "../common/NumberPad";
 import PlayerPageMenu from "./PlayerPageMenu";
 
@@ -117,7 +118,9 @@ function PlayerPage({ playerId }: Props) {
           <Text size="sm" c="dimmed">
             Current score
           </Text>
-          <Title order={1}>{formatScore(player.score)}</Title>
+          <Title order={1}>
+            <AnimatedScore value={player.score} />
+          </Title>
         </Stack>
       </Card>
 

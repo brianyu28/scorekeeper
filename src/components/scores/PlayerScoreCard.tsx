@@ -2,7 +2,7 @@ import { Box, Card, Group, Stack, Text } from "@mantine/core";
 import { useDispatch } from "react-redux";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import type { PlayerWithPlace } from "../../types/PlayerWithPlace";
-import { formatScore } from "../../utils/scores/formatScore";
+import AnimatedScore from "../common/AnimatedScore";
 import PlayerPlaceIndicator from "./PlayerPlaceIndicator";
 import styles from "./PlayerScoreCard.module.scss";
 
@@ -31,7 +31,7 @@ function PlayerScoreCard({ player }: PlayerScoreCardProps) {
           </Stack>
           <Box className={styles.scoreBadge}>
             <Text className={styles.scoreValue}>
-              {formatScore(player.score)}
+              <AnimatedScore value={player.score} />
             </Text>
           </Box>
         </Group>

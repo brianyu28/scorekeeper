@@ -1,4 +1,4 @@
-import { Button, Menu } from "@mantine/core";
+import { Burger, Menu } from "@mantine/core";
 import { useDispatch } from "react-redux";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import { PageType } from "../../types/Page";
@@ -21,7 +21,7 @@ function PlayerPageMenu({ playerId }: PlayerPageMenuProps) {
       arrowPosition="center"
     >
       <Menu.Target>
-        <Button variant="outline">Player</Button>
+        <Burger opened={false} aria-label="Open player menu" />
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item

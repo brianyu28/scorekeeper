@@ -1,6 +1,9 @@
-import { Button, Menu } from "@mantine/core";
+import { Burger, Menu } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAreHigherValuesBetter } from "../../data/selectors/UiSelectors";
+import {
+  selectAreHigherValuesBetter,
+  selectShowScoresViewSwitcher,
+} from "../../data/selectors/UiSelectors";
 import { SCORES_PAGE } from "../../types/Page";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 
@@ -15,6 +18,17 @@ function ScoresPageMenu({
 }: ScoresPageMenuProps) {
   const dispatch = useDispatch();
   const areHigherValuesBetter = useSelector(selectAreHigherValuesBetter);
+  const showScoresViewSwitcher = useSelector(selectShowScoresViewSwitcher);
+
+  const handleToggleViewSwitcher = () => {
+    dispatch(
+      ScorekeeperActions.SetShowScoresViewSwitcher(!showScoresViewSwitcher),
+    );
+  };
+
+  const handleReloadScores = () => {
+    dispatch(ScorekeeperActions.ReloadPlayersFromLocalStorage());
+  };
 
   return (
     <Menu
@@ -26,7 +40,7 @@ function ScoresPageMenu({
       arrowPosition="center"
     >
       <Menu.Target>
-        <Button variant="outline">Game</Button>
+        <Burger opened={false} aria-label="Open scores menu" />
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
@@ -53,6 +67,13 @@ function ScoresPageMenu({
         >
           Larger scores are better
         </Menu.Item>
+        <Menu.Item
+          onClick={handleToggleViewSwitcher}
+          rightSection={showScoresViewSwitcher ? "On" : "Off"}
+        >
+          View switcher
+        </Menu.Item>
+        <Menu.Item onClick={handleReloadScores}>Reload scores</Menu.Item>
         <Menu.Sub position="left-start">
           <Menu.Sub.Target>
             <Menu.Sub.Item>Reset</Menu.Sub.Item>

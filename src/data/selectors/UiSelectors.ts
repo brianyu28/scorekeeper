@@ -41,3 +41,8 @@ export const selectScoresViewMode = createSelector(
   selectUiState,
   (uiState) => uiState.scoresViewMode,
 );
+
+export const selectShowScoresViewSwitcher = createSelector(
+  selectUiState,
+  (uiState) => uiState.showScoresViewSwitcher,
+);

@@ -53,6 +53,7 @@ const UiSchema = Object({
     Literal(ScoresViewMode.CUSTOM),
     Literal(ScoresViewMode.BY_SCORE),
   ),
+  showScoresViewSwitcher: Optional(Boolean),
   historyBackPage: Optional(PageWithoutHistorySchema),
 }).exact();
 

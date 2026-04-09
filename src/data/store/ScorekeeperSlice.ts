@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { PLAYER_CONFIG_PAGE, ScoresViewMode } from "../../types/Page";
+import type { Player } from "../../types/Player";
 import { GameConfigReducers } from "../reducers/GameConfigReducers";
 import { PlayerReducers } from "../reducers/PlayerReducers";
 import { UiReducers } from "../reducers/UiReducers";
@@ -16,6 +17,7 @@ export function createInitialScorekeeperState(): ScorekeeperState {
     ui: {
       page: PLAYER_CONFIG_PAGE,
       scoresViewMode: ScoresViewMode.CUSTOM,
+      showScoresViewSwitcher: true,
     },
     scoreHistory: [],
   };
@@ -34,6 +36,10 @@ export const scorekeeperSlice = createSlice({
       });
       state.scoreHistory = [];
     },
+    ReplacePlayers: (state, action: PayloadAction<Player[]>) => {
+      state.players = action.payload;
+    },
+    ReloadPlayersFromLocalStorage: () => {},
     ...PlayerReducers,
     ...GameConfigReducers,
     ...UiReducers,
