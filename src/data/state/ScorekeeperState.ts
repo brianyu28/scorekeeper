@@ -20,6 +20,7 @@ export interface GameConfig {
 export interface UiState {
   page: Page;
   scoresViewMode: ScoresViewMode;
-  showScoresViewSwitcher: boolean;
+  isScoresViewSwitcherEnabled: boolean;
+  areLiveUpdatesEnabled: boolean;
   historyBackPage?: PageWithoutHistory;
 }

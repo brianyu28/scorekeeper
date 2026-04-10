@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPlayersForScoresView } from "../../data/selectors/PlayerSelectors";
-import { selectShowScoresViewSwitcher } from "../../data/selectors/UiSelectors";
+import { selectIsScoresViewSwitcherEnabled } from "../../data/selectors/UiSelectors";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
 import PlayerScoreCard from "./PlayerScoreCard";
 import ResetPlayersModal from "./ResetPlayersModal";
@@ -15,7 +15,9 @@ import ScoresViewToggle from "./ScoresViewToggle";
 function ScoresPage() {
   const dispatch = useDispatch();
   const players = useSelector(selectPlayersForScoresView);
-  const showScoresViewSwitcher = useSelector(selectShowScoresViewSwitcher);
+  const isScoresViewSwitcherEnabled = useSelector(
+    selectIsScoresViewSwitcherEnabled,
+  );
   const [isResetPlayersModalOpen, setIsResetPlayersModalOpen] = useState(false);
   const [isResetScoresModalOpen, setIsResetScoresModalOpen] = useState(false);
 
@@ -49,7 +51,7 @@ function ScoresPage() {
           onResetScores={() => setIsResetScoresModalOpen(true)}
         />
       </Group>
-      {showScoresViewSwitcher ? <ScoresViewToggle /> : null}
+      {isScoresViewSwitcherEnabled ? <ScoresViewToggle /> : null}
       <div className={styles.playerList}>
         {players.map((player) => (
           <motion.div key={player.id} layout>

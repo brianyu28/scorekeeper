@@ -17,7 +17,8 @@ export function createInitialScorekeeperState(): ScorekeeperState {
     ui: {
       page: PLAYER_CONFIG_PAGE,
       scoresViewMode: ScoresViewMode.CUSTOM,
-      showScoresViewSwitcher: true,
+      isScoresViewSwitcherEnabled: true,
+      areLiveUpdatesEnabled: false,
     },
     scoreHistory: [],
   };
@@ -38,6 +39,12 @@ export const scorekeeperSlice = createSlice({
     },
     ReplacePlayers: (state, action: PayloadAction<Player[]>) => {
       state.players = action.payload;
+    },
+    ReplaceScoreHistory: (
+      state,
+      action: PayloadAction<ScorekeeperState["scoreHistory"]>,
+    ) => {
+      state.scoreHistory = action.payload;
     },
     ReloadPlayersFromLocalStorage: () => {},
     ...PlayerReducers,

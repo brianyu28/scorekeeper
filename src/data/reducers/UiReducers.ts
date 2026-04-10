@@ -34,11 +34,17 @@ export const UiReducers = {
   ) => {
     state.ui.scoresViewMode = action.payload;
   },
-  SetShowScoresViewSwitcher: (
+  SetIsScoresViewSwitcherEnabled: (
     state: ScorekeeperState,
     action: PayloadAction<boolean>,
   ) => {
-    state.ui.showScoresViewSwitcher = action.payload;
+    state.ui.isScoresViewSwitcherEnabled = action.payload;
+  },
+  SetLiveUpdatesEnabled: (
+    state: ScorekeeperState,
+    action: PayloadAction<boolean>,
+  ) => {
+    state.ui.areLiveUpdatesEnabled = action.payload;
   },
   ShowHistoryPage: (
     state: ScorekeeperState,

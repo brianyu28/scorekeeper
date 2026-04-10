@@ -1,11 +1,12 @@
-import { Burger, Menu } from "@mantine/core";
+import { Box, Burger, Group, Menu } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectAreHigherValuesBetter,
-  selectShowScoresViewSwitcher,
+  selectAreLiveUpdatesEnabled,
+  selectIsScoresViewSwitcherEnabled,
 } from "../../data/selectors/UiSelectors";
-import { SCORES_PAGE } from "../../types/Page";
 import { ScorekeeperActions } from "../../data/store/ScorekeeperSlice";
+import { SCORES_PAGE } from "../../types/Page";
 
 interface ScoresPageMenuProps {
   onResetPlayers: () => void;
@@ -18,11 +19,16 @@ function ScoresPageMenu({
 }: ScoresPageMenuProps) {
   const dispatch = useDispatch();
   const areHigherValuesBetter = useSelector(selectAreHigherValuesBetter);
-  const showScoresViewSwitcher = useSelector(selectShowScoresViewSwitcher);
+  const isScoresViewSwitcherEnabled = useSelector(
+    selectIsScoresViewSwitcherEnabled,
+  );
+  const areLiveUpdatesEnabled = useSelector(selectAreLiveUpdatesEnabled);
 
   const handleToggleViewSwitcher = () => {
     dispatch(
-      ScorekeeperActions.SetShowScoresViewSwitcher(!showScoresViewSwitcher),
+      ScorekeeperActions.SetIsScoresViewSwitcherEnabled(
+        !isScoresViewSwitcherEnabled,
+      ),
     );
   };
 
@@ -40,7 +46,18 @@ function ScoresPageMenu({
       arrowPosition="center"
     >
       <Menu.Target>
-        <Burger opened={false} aria-label="Open scores menu" />
+        <Group gap={6} align="center">
+          {areLiveUpdatesEnabled ? (
+            <Box
+              w={8}
+              h={8}
+              bg="red"
+              style={{ borderRadius: 9999 }}
+              aria-label="Live updates enabled"
+            />
+          ) : null}
+          <Burger opened={false} aria-label="Open scores menu" />
+        </Group>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
@@ -69,11 +86,30 @@ function ScoresPageMenu({
         </Menu.Item>
         <Menu.Item
           onClick={handleToggleViewSwitcher}
-          rightSection={showScoresViewSwitcher ? "On" : "Off"}
+          rightSection={isScoresViewSwitcherEnabled ? "On" : "Off"}
         >
           View switcher
         </Menu.Item>
-        <Menu.Item onClick={handleReloadScores}>Reload scores</Menu.Item>
+        <Menu.Sub position="left-start">
+          <Menu.Sub.Target>
+            <Menu.Sub.Item>Advanced</Menu.Sub.Item>
+          </Menu.Sub.Target>
+          <Menu.Sub.Dropdown>
+            <Menu.Item
+              onClick={() =>
+                dispatch(
+                  ScorekeeperActions.SetLiveUpdatesEnabled(
+                    !areLiveUpdatesEnabled,
+                  ),
+                )
+              }
+              rightSection={areLiveUpdatesEnabled ? "On" : "Off"}
+            >
+              Live updates
+            </Menu.Item>
+            <Menu.Item onClick={handleReloadScores}>Reload scores</Menu.Item>
+          </Menu.Sub.Dropdown>
+        </Menu.Sub>
         <Menu.Sub position="left-start">
           <Menu.Sub.Target>
             <Menu.Sub.Item>Reset</Menu.Sub.Item>

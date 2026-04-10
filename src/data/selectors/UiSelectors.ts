@@ -42,7 +42,12 @@ export const selectScoresViewMode = createSelector(
   (uiState) => uiState.scoresViewMode,
 );
 
-export const selectShowScoresViewSwitcher = createSelector(
+export const selectIsScoresViewSwitcherEnabled = createSelector(
   selectUiState,
-  (uiState) => uiState.showScoresViewSwitcher,
+  (uiState) => uiState.isScoresViewSwitcherEnabled,
+);
+
+export const selectAreLiveUpdatesEnabled = createSelector(
+  selectUiState,
+  (uiState) => uiState.areLiveUpdatesEnabled,
 );

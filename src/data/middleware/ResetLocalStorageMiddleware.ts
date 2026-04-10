@@ -8,10 +8,10 @@ import { ScorekeeperActions } from "../store/ScorekeeperSlice";
 
 export const ResetLocalStorageMiddleware: Middleware =
   (api) => (next) => (action) => {
-    const persistedPlayers =
+    const persistedState =
       hasActionType(action) &&
       action.type === ScorekeeperActions.ReloadPlayersFromLocalStorage.type
-        ? loadScorekeeperState().players
+        ? loadScorekeeperState()
         : undefined;
 
     const result = next(action);
@@ -25,7 +25,14 @@ export const ResetLocalStorageMiddleware: Middleware =
     }
 
     if (action.type === ScorekeeperActions.ReloadPlayersFromLocalStorage.type) {
-      api.dispatch(ScorekeeperActions.ReplacePlayers(persistedPlayers ?? []));
+      api.dispatch(
+        ScorekeeperActions.ReplacePlayers(persistedState?.players ?? []),
+      );
+      api.dispatch(
+        ScorekeeperActions.ReplaceScoreHistory(
+          persistedState?.scoreHistory ?? [],
+        ),
+      );
     }
 
     return result;
